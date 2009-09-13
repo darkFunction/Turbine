@@ -2,7 +2,7 @@
 App Entry point for WIN32 & Init OpenGL  ES
 ******************************************************************************/
 #include "Platform.h"
-#include "Globals.h"
+#include "Types.h"
 #include "Game.h"
 
 

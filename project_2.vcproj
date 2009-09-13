@@ -174,11 +174,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\Resources.cpp"
+				RelativePath=".\src\Image.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\Sprite.cpp"
+				RelativePath=".\src\ResourceManager.cpp"
 				>
 			</File>
 			<File
@@ -200,11 +200,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\Globals.h"
+				RelativePath=".\src\Graphics.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\Graphics.h"
+				RelativePath=".\src\Image.h"
 				>
 			</File>
 			<File
@@ -212,15 +212,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\Resources.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\Sprite.h"
+				RelativePath=".\src\ResourceManager.h"
 				>
 			</File>
 			<File
 				RelativePath=".\src\Surface.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\Types.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\Vector2D.h"
 				>
 			</File>
 		</Filter>

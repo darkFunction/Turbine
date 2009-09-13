@@ -1,8 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "Globals.h"
-#include "Resources.h"
+#include "Types.h"
+#include "ResourceManager.h"
 
 class Game
 {
@@ -15,10 +15,12 @@ public:
 	void Init();
 	void Draw();
 
+	void LoadResources();
 
 private:
 
-	Sprite* testSprite;
+	ResourceManager		*_pResManager;
+	Image				*_pImgTest;
 
 };
 

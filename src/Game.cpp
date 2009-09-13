@@ -5,21 +5,27 @@
 Game::Game() 
 {
 	Init();
+	LoadResources();
 }
 
 Game::~Game()
 {
-
+	delete _pResManager;
 }
 
 void Game::Init()
 {
 	
-
-
-	testSprite = PngToSprite("resources/graphics/test.png");
+	_pResManager = new ResourceManager();
 	
 
+}
+
+void Game::LoadResources()
+{
+	_pImgTest = _pResManager->LoadImage("resources/graphics/test.png");
+	
+	_pResManager->GenerateTextures(Vector2i(1024, 1024));
 
 
 }

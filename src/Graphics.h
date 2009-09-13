@@ -1,7 +1,7 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
-#include "Globals.h"
+#include "Types.h"
 #include "Platform.h"
 
 
