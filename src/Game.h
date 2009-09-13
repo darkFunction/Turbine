@@ -3,6 +3,7 @@
 
 #include "Types.h"
 #include "ResourceManager.h"
+#include "Graphics.h"
 
 class Game
 {
@@ -19,6 +20,7 @@ public:
 
 private:
 
+	Graphics			*_pGfx;
 	ResourceManager		*_pResManager;
 	Image				*_pImgTest;
 

@@ -1,8 +1,10 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
-#include "Graphics.h"
+//#include "Graphics.h"
 #include <String>
+#include "Types.h"
+#include "Platform.h"
 
 class Image
 {
@@ -25,7 +27,6 @@ public:
 	uint16 _width;
 	uint16 _height;
 
-	uint8  *_pRawData;
 
 
 };

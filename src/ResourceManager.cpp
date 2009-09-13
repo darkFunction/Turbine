@@ -4,6 +4,7 @@
 
 using namespace std;
 
+// takes ownership of image data
 Image* ResourceManager::LoadImage(const string &aPath)
 {
 	Surface* pSurface = PngToSurface(aPath.c_str());
@@ -49,7 +50,7 @@ void ResourceManager::GenerateTextures(const Vector2i &maxSize)
 		sortedSurfaces.push_back(it->second);
 	}
 
-	for (int i=0; i<sortedSurfaces.size()-1; ++i)
+	for (uint16 i=0; i<sortedSurfaces.size()-1; ++i)
 	{
 		Surface *s = sortedSurfaces[i];
 		int area1 = s->GetWidth() * s->GetHeight();
@@ -67,6 +68,23 @@ void ResourceManager::GenerateTextures(const Vector2i &maxSize)
 
 	// test code
 	pMaster->BlitSurface(sortedSurfaces[0], 0, 0);
+
+	// just test master surface as image for now
+	ImageByName::const_iterator it = _loadedImages.begin();
+	Image* pTestImg = it->second;
+
+	return;
+
+	
+	pTestImg->_textureX = 0.0f;
+	pTestImg->_textureY = 0.0f;
+	pTestImg->_textureW = 1.0f;
+	pTestImg->_textureH = 1.0f;
+	pTestImg->_width = sortedSurfaces[0]->GetWidth();
+	pTestImg->_height = sortedSurfaces[0]->GetHeight();
+
+	pTestImg->_texture = sortedSurfaces[0]->CreateGLTexture();
+
 
 
 

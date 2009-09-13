@@ -1,19 +1,26 @@
 #include "Graphics.h"
 
 
-GLuint boundTexture = 0;
-
-
-void gfxDrawTexture(GLuint texture, float x, float y)
+Graphics::Graphics()
 {
-	if (boundTexture != texture)
+	_boundTexture = 0;
+}
+
+Graphics::~Graphics()
+{
+
+}
+
+void Graphics::DrawImage(const Image* a_pImg, float aX, float aY)
+{
+	GLuint aTextureName = a_pImg->_texture;
+
+	if (_boundTexture != aTextureName)
 	{
-		glBindTexture(GL_TEXTURE_2D, texture);
-		boundTexture = texture;
+		glBindTexture(GL_TEXTURE_2D, aTextureName);
+		_boundTexture = aTextureName;
 	}
 
-
-	
 
 	//GLfloat vertices = 
 	//{

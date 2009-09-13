@@ -3,11 +3,19 @@
 
 #include "Types.h"
 #include "Platform.h"
+#include "Image.h"
 
+class Graphics
+{
+public:
+	Graphics();
+	~Graphics();
 
-void gfxDrawTexture();
+	void DrawImage(const Image* a_pImg, float aX, float aY);
 
-
+private :
+	GLuint _boundTexture;
+};
 
 
 #endif

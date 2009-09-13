@@ -269,6 +269,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, TCHAR *lpCmdLin
 		*/
 		eglSwapBuffers(eglDisplay, eglSurface);
 
+		// TODO: game loop!
+
+		game->Draw();
+
 
 		// Managing the window messages
 		MSG msg;
