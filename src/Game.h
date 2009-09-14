@@ -9,16 +9,23 @@ class Game
 {
 public: 
 
-	Game();
-	~Game();
+	Game() 
+	{	
+		_pResManager = new ResourceManager();
+		_pGfx = new Graphics();
+	}
+	virtual ~Game()
+	{
+		delete _pResManager;
+		delete _pGfx;
+	}
 
-	void Update();
-	void Init();
-	void Draw();
+	
+	virtual void Update() = 0;
+	virtual void Draw() = 0;
+	virtual void LoadResources() = 0;	
 
-	void LoadResources();
-
-private:
+protected:
 
 	Graphics			*_pGfx;
 	ResourceManager		*_pResManager;

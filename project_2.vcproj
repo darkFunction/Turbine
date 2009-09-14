@@ -166,10 +166,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\src\Game.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\Graphics.cpp"
 				>
 			</File>
@@ -183,6 +179,10 @@
 			</File>
 			<File
 				RelativePath=".\src\Surface.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TestGame.cpp"
 				>
 			</File>
 			<File
@@ -217,6 +217,10 @@
 			</File>
 			<File
 				RelativePath=".\src\Surface.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\TestGame.h"
 				>
 			</File>
 			<File

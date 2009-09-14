@@ -3,7 +3,7 @@ App Entry point for WIN32 & Init OpenGL  ES
 ******************************************************************************/
 #include "Platform.h"
 #include "Types.h"
-#include "Game.h"
+#include "TestGame.h"
 
 
 /******************************************************************************
@@ -257,7 +257,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, TCHAR *lpCmdLin
 		OpenGL ES to draw something on the screen.
 	*/
 
-	Game* game = new Game();
+	Game* game = new TestGame();
+	game->LoadResources();
 
 	// Clears the screen in different colours
 	while(!bQuit)
