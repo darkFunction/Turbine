@@ -4,7 +4,6 @@
 #include "Surface.h"
 #include "Types.h"
 #include <String>
-#include "../lpng1239/png.h"
 #include "Image.h"
 #include <map>
 #include "Vector2D.h"

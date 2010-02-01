@@ -12,8 +12,8 @@
 #define MAX_TEXTURE_WIDTH	1024
 #define MAX_TEXTURE_HEIGHT	1024
 
-#define SCREENWIDTH			320
-#define SCREENHEIGHT		480
+#define SCREENWIDTH			320.0f
+#define SCREENHEIGHT		480.0f
 
 
 #endif

@@ -16,9 +16,6 @@ public:
 
 	GLuint _texture;
 
-	// These are all public because this is a dumb object.
-	// If you really think you can justify writing getters/setters,
-	// be my guest.
 	float _textureX;
 	float _textureY;
 	float _textureW;

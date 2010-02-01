@@ -8,12 +8,12 @@ class Surface
 {
 public:
 
-	Surface(uint8** a_pData, int aW, int aH, uint8 aBytesPerPixel);
+	Surface(uint8* a_pData, int aW, int aH, int aBytesPerPixel);
 
 	int GetWidth() const;
 	int GetHeight() const;
-	uint8 GetBytesPerPixel() const;
-	uint8** GetPixels() const;
+	int GetBytesPerPixel() const;
+	uint8* GetPixels() const;
 
 	bool BlitSurface(const Surface* aSurface, int aOffsetX, int aOffsetY);
 
@@ -28,8 +28,8 @@ protected:
 private:
 	int		_width;
 	int		_height;
-	uint8	_bytesPerPixel;
-	uint8	**_pPixelData;
+	int		_bytesPerPixel;
+	uint8	*_pPixelData;
 };
 
 #endif

@@ -15,6 +15,9 @@ public:
 
 private :
 	GLuint _boundTexture;
+
+	void InitOGLES_2D();
+	void InitOGLES_3D();
 };
 
 
