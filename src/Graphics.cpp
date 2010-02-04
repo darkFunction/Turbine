@@ -4,6 +4,7 @@
 Graphics::Graphics()
 {
 	_boundTexture = 0;
+	_aspectRatio = (SCREENWIDTH / SCREENHEIGHT);
 
 	InitOGLES_2D();
 }
@@ -22,28 +23,26 @@ void Graphics::InitOGLES_3D()
 
 void Graphics::InitOGLES_2D()
 {		
+	glViewport(0, 0, SCREENWIDTH, SCREENHEIGHT);
+	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	glOrthof(-1.0f,									// Left
-			  1.0f,									// Right
-			 -1.0f / (SCREENWIDTH / SCREENHEIGHT),	// Bottom
-			  1.0f / (SCREENWIDTH / SCREENHEIGHT),	// Top
-			  0.01f,								// Near
-			  2.0f);								// Far
+	// just make 1 unit == 1 pixel for ease, and make top left (0,0)
+	glOrthof(0.0f, (GLfloat)SCREENWIDTH, (GLfloat)-SCREENHEIGHT, 0.0f, -1.0f, 1.0f);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-
-	glViewport(0, 0, (int)SCREENWIDTH, (int)SCREENHEIGHT);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);	
 	
-    glEnable(GL_TEXTURE_2D);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);				 
+    glEnable(GL_TEXTURE_2D);							 
     glEnable(GL_BLEND);
-    glBlendFunc(GL_ONE, GL_SRC_COLOR);//glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA); //glBlendFunc(GL_ONE, GL_ONE);//GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBlendFunc(GL_ONE, GL_SRC_COLOR);
 
-	glDisable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);		
+	glDisable(GL_DEPTH_TEST);	
+
+	glEnable(GL_CULL_FACE);
+	glFrontFace(GL_CW); 	
 }
 
 void Graphics::DrawImage(const Image* a_pImg, float aX, float aY)
@@ -57,10 +56,10 @@ void Graphics::DrawImage(const Image* a_pImg, float aX, float aY)
 
 	static const float vertices[] =  
 	{
-		-0.25f,	0.25f,	0.0f,
-		 0.25,	0.25f,	0.0f,
-		-0.25,	-0.25f, 0.0f,
-		 0.25f,	-0.25f, 0.0f		 
+		-0.5f * 128,	 0.5f * 128,  0,
+		 0.5f * 128,	 0.5f * 128,  0,
+		-0.5f * 128,	-0.5f * 128,  0,
+		 0.5f * 128,	-0.5f * 128,  0		 
 	};
 
 	static const GLfloat texCoords[] =
@@ -71,9 +70,6 @@ void Graphics::DrawImage(const Image* a_pImg, float aX, float aY)
         1.0f, 0.0f
     };
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
@@ -81,14 +77,15 @@ void Graphics::DrawImage(const Image* a_pImg, float aX, float aY)
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);	
 
 	glVertexPointer(3, GL_FLOAT, 0, &vertices);
-	glTexCoordPointer(2, GL_FLOAT, 0, &texCoords);
+	glTexCoordPointer(2, GL_FLOAT, 0, &texCoords);	
 
-	static float f = 0;
-	f+=1;
-	glRotatef(f, 0, 1.0f, 0);
-	//glTranslatef(0.5f, 0.5f, -0.5f);
+	static float x =0;
+	static float y = 0;
+	y -= 0.5f;
+	x += 0.5f;
+	glTranslatef(x, y, 0.0f);
 
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);		
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);			
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);

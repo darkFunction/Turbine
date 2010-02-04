@@ -16,7 +16,7 @@ public:
 	uint8* GetPixels() const;
 
 	bool BlitSurface(const Surface* aSurface, int aOffsetX, int aOffsetY);
-
+	void FlipY();
 
 	void Destroy();
 

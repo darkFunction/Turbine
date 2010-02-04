@@ -15,6 +15,7 @@ public:
 
 private :
 	GLuint _boundTexture;
+	float _aspectRatio;
 
 	void InitOGLES_2D();
 	void InitOGLES_3D();

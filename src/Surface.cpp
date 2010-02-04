@@ -5,9 +5,15 @@ Surface::Surface(uint8* a_pData, int aW, int aH, int aBPP)
 	long numBytes = aW * aH * aBPP;
 	_pPixelData = (uint8*)malloc(numBytes);	
 
-	// flip because OpenGL has inverted y axis	
-	for (long i=0; i<numBytes; i += aBPP)
-		memcpy(&_pPixelData[i], &a_pData[numBytes-i-aBPP], aBPP);	
+	if (a_pData)		
+	{	
+		memcpy(&_pPixelData[0], &a_pData[0], numBytes);	
+	}
+	else
+	{
+		// we can initialise a NULL surface too, just set to all one colour
+		memset(_pPixelData, 0, numBytes);
+	}
 
 	_width = aW;
 	_height = aH;
@@ -45,6 +51,20 @@ int Surface::GetBytesPerPixel() const
 	return _bytesPerPixel;
 }
 
+void Surface::FlipY()
+{	
+	long numBytes = _width * _height * _bytesPerPixel;
+
+	uint8* flipped = new uint8[numBytes];
+
+	for (long y=0; y<_height; ++y)
+	{		
+		memcpy(&flipped[y * _width * _bytesPerPixel], &_pPixelData[(_height - y - 1) * _width * _bytesPerPixel], _width * _bytesPerPixel);	
+	}
+
+	delete[] _pPixelData;
+	_pPixelData = flipped;
+}
 
 GLuint Surface::CreateGLTexture()
 {	
@@ -82,6 +102,9 @@ bool Surface::BlitSurface(const Surface* aSurface, int aOffsetX, int aOffsetY)
 	{
 		throw "Trying to blit surface outside bounds";
 	}
+	
+	if (_bytesPerPixel != aSurface->GetBytesPerPixel())
+		throw "Trying to blit surfaces of different colour depths";
 
 	if (	aOffsetX + aSurface->GetWidth() > GetWidth()
 		||  aOffsetY + aSurface->GetHeight() > GetHeight() )
@@ -91,15 +114,18 @@ bool Surface::BlitSurface(const Surface* aSurface, int aOffsetX, int aOffsetY)
 	}
 	
 	// copy pixels	
-	/*
-	for (int y=0; y<aSurface->GetHeight(); ++y)
-	{		
-		for (int x=0; x<aSurface->GetWidth(); ++x)
-		{
-			_pPixelData[y + aOffsetY][x + aOffsetX] = aSurface->GetPixels()[y][x];
-		}	
+	for (long y=0; y<aSurface->GetHeight(); ++y)
+	{			
+		long destOffset = aOffsetX + ((aOffsetY+y) * _width);
+		long srcOffset = y * aSurface->GetWidth();
+
+		destOffset *= _bytesPerPixel;
+		srcOffset *= _bytesPerPixel;
+
+		memcpy(&_pPixelData[destOffset], &aSurface->GetPixels()[srcOffset], aSurface->GetWidth() * _bytesPerPixel);		
 	}
-	*/
+
+
 
 	return true;
 

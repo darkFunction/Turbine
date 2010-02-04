@@ -79,7 +79,11 @@ void ResourceManager::GenerateTextures(const Vector2i &maxSize)
 
 	SurfaceByName::const_iterator it2 = _loadedSurfaces.begin();
 	Surface* pTestSurface = it2->second;
-	
+
+
+	// flip because OpenGL has inverted y axis	
+	pTestSurface->FlipY();
+
 	pTestImg->_textureX = 0.0f;
 	pTestImg->_textureY = 0.0f;
 	pTestImg->_textureW = 1.0f;
