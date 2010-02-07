@@ -23,7 +23,7 @@ void Graphics::InitOGLES_3D()
 
 void Graphics::InitOGLES_2D()
 {		
-	glViewport(0, 0, SCREENWIDTH, SCREENHEIGHT);
+	glViewport(0, 0, (GLsizei)SCREENWIDTH, (GLsizei)SCREENHEIGHT);
 	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -54,12 +54,14 @@ void Graphics::DrawImage(const Image* a_pImg, float aX, float aY)
 		_boundTexture = aTextureName;	
 	}
 
+	float w = a_pImg->_width;
+	float h = a_pImg->_height;
 	static const float vertices[] =  
 	{
-		-0.5f * 128,	 0.5f * 128,  0,
-		 0.5f * 128,	 0.5f * 128,  0,
-		-0.5f * 128,	-0.5f * 128,  0,
-		 0.5f * 128,	-0.5f * 128,  0		 
+		-0.5f * w,	 0.5f * h,  0,
+		 0.5f * w,	 0.5f * h,  0,
+		-0.5f * w,	-0.5f * h,  0,
+		 0.5f * w,	-0.5f * h,  0		 
 	};
 
 	static const GLfloat texCoords[] =
@@ -68,6 +70,11 @@ void Graphics::DrawImage(const Image* a_pImg, float aX, float aY)
         1.0f, 1.0f,
         0.0f, 0.0f,
         1.0f, 0.0f
+		/*a_pImg->_textureX, a_pImg->_textureH,
+        a_pImg->_textureW, a_pImg->_textureH,
+        a_pImg->_textureX, a_pImg->_textureY,
+        a_pImg->_textureW, a_pImg->_textureY
+		*/
     };
 
 	glMatrixMode(GL_MODELVIEW);

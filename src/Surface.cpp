@@ -40,6 +40,11 @@ int Surface::GetHeight() const
 	return _height;
 }
 
+long Surface::GetArea() const
+{
+	return _width * _height;
+}
+
 uint8* Surface::GetPixels() const
 {
 	return _pPixelData;

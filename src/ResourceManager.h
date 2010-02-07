@@ -5,13 +5,11 @@
 #include "Types.h"
 #include <String>
 #include "Image.h"
-#include <map>
 #include "Vector2D.h"
+#include <vector>
 
-typedef std::map<std::string, Surface*> SurfaceByName;
-typedef std::pair<std::string, Surface*> SurfaceNamePair;
-typedef std::map<std::string, Image*> ImageByName;
-typedef std::pair<std::string, Image*> ImageNamePair;
+
+typedef std::pair<Image*, Surface*> ImageSurfacePair;
 
 class ResourceManager
 {
@@ -27,10 +25,9 @@ protected:
 
 private:
 	
-	SurfaceByName _loadedSurfaces;
-	ImageByName	 _loadedImages;
+	std::vector<ImageSurfacePair> _preloadData;
+	std::vector<Image*> _loadedImages;
 
-	
 	Surface* PngToSurface(const char *file_name);
 
 

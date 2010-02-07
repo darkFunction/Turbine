@@ -12,6 +12,7 @@ public:
 
 	int GetWidth() const;
 	int GetHeight() const;
+	long GetArea() const;
 	int GetBytesPerPixel() const;
 	uint8* GetPixels() const;
 

@@ -6,7 +6,7 @@ class Vector2i
 public:	
 	int x, y;
 
-	Vector2i() { };
+	Vector2i() { }
 	Vector2i(int x, int y)
 	{
 		this->x = x;
@@ -19,7 +19,7 @@ public:
 		this->y = _vec.y;
 	}
 	
-	~Vector2i() { };
+	~Vector2i() { }
 
 	Vector2i operator - (const Vector2i &_vec)
 	{

@@ -1,22 +1,119 @@
 #include "ResourceManager.h"
-#include <vector>
-
 
 #include <iostream>
 #include <fstream>
 #include "../third_party/PicoPNG/picopng.h"
+#include "Rect.h"
 
 using namespace std;
+
+struct Node
+{
+    Node **children;
+    Rect rect;  
+	boolean bTaken;
+
+	Node()
+	{
+		children = NULL;
+		bTaken = false;
+	}
+
+	~Node()
+	{
+		if (children)
+			delete[] children;
+	}
+
+	Node* Insert(const Rect &aRect)
+	{
+		if (children) // not  a leaf
+		{
+			// try inserting into first child
+			Node* node = children[0]->Insert(aRect);
+			if (node)
+				return node;
+
+			// no room, insert into second
+			return children[1]->Insert(aRect);
+		}
+		else 
+		{
+			if (bTaken)
+				return NULL;
+			
+			if (	aRect.width > this->rect.width
+				||	aRect.height > this->rect.height)
+			{
+				// node is too small, rect can't fit inside
+				return NULL;
+			}
+			
+			if (	aRect.width == this->rect.width
+				&&	aRect.height == this->rect.height)
+			{
+				// fits perfectly
+				this->bTaken = true;
+				return this;
+			}
+
+			// otherwise split node and create kids
+			children = new Node*[2];
+			children[0] = new Node();
+			children[1] = new Node();
+
+			// decide which way to split
+			int dw = this->rect.width - aRect.width;
+			int dh = this->rect.height - aRect.height;
+
+			if (dw > dh)
+			{
+				children[0]->rect = Rect(	this->rect.x,
+											this->rect.y,                       
+											aRect.width,
+											this->rect.height);
+
+				children[1]->rect = Rect(	this->rect.x + aRect.width,
+											this->rect.y,                       
+											this->rect.width - aRect.width,
+											this->rect.height);
+			}
+			else
+			{
+				children[0]->rect = Rect(	this->rect.x,
+											this->rect.y,
+											this->rect.width,
+											aRect.height);
+
+				children[1]->rect = Rect(	this->rect.x,
+											this->rect.y + aRect.height,
+											this->rect.width,
+											this->rect.height - aRect.height);
+			}
+
+			// insert into first child we created
+			return children[0]->Insert(aRect);
+		}
+	}
+
+};
 
 // takes ownership of image data
 Image* ResourceManager::LoadImage(const string &aPath)
 {
 	Surface* pSurface = PngToSurface(aPath.c_str());
-	_loadedSurfaces.insert(SurfaceNamePair(aPath, pSurface));
 	
-	Image* pImage = new Image();
-	pImage->_pPathName = aPath;
-	_loadedImages.insert(ImageNamePair(aPath, pImage));
+	Image* pImage = NULL;
+
+	if (pSurface)
+	{
+		pImage = new Image();
+		pImage->_pPathName = aPath;
+		pImage->_width = pSurface->GetWidth();
+		pImage->_height = pSurface->GetHeight();
+
+		_preloadData.push_back(ImageSurfacePair(pImage, pSurface));
+	}
 
 	return pImage;
 }
@@ -28,71 +125,77 @@ ResourceManager::ResourceManager()
 
 ResourceManager::~ResourceManager()
 {
-	for (ImageByName::const_iterator it = _loadedImages.begin(); it != _loadedImages.end(); )
+	while(!_preloadData.empty())
 	{
-		delete it->second;
-		_loadedImages.erase(it);
-	}
-
-	for (SurfaceByName::const_iterator it = _loadedSurfaces.begin(); it != _loadedSurfaces.end();)
-	{
-		it->second->Destroy();
-		_loadedSurfaces.erase(it);
-	}
-	
+		vector<ImageSurfacePair>::const_iterator it = _preloadData.begin();
+		delete it->first;
+		it->second->Destroy();		
+		_preloadData.erase(it);
+	}	
 }
+
+
 
 void ResourceManager::GenerateTextures(const Vector2i &maxSize)
 { 
-	//Surface* pMaster = new Surface(NULL, maxSize.x, maxSize.y);
-
-	// order by size	
-	/*
-	vector<Surface*> sortedSurfaces;
-	for (SurfaceByName::const_iterator it = _loadedSurfaces.begin(); it != _loadedSurfaces.end(); ++it)
+	// sort by size
+	for (uint16 i=0; i<_preloadData.size()-1; ++i)
 	{
-		sortedSurfaces.push_back(it->second);
+		Surface* s1 = _preloadData[i].second;
+		Surface* s2 = _preloadData[i+1].second;
+
+		if (s1->GetArea() < s2->GetArea())
+		{
+			Surface* temp = s1;
+			s1 = s2;
+			s2 = s1;
+		}
 	}
 
-	for (uint16 i=0; i<sortedSurfaces.size()-1; ++i)
-	{
-		Surface *s = sortedSurfaces[i];
-		int area1 = s->GetWidth() * s->GetHeight();
-		s++;
-		int area2 = s->GetWidth() * s->GetHeight();
+	vector<Surface*> masterTextures;
 
-		if (area1 < area2)
+	while(!_preloadData.empty())
+	{
+		Surface* masterSurface = new Surface(NULL, maxSize.x, maxSize.y, 4);
+		vector<Image*> imagesOnSurface;
+
+		Node rootNode;
+		rootNode.rect = Rect(0, 0, maxSize.x, maxSize.y);
+
+		for (vector<ImageSurfacePair>::iterator it = _preloadData.begin(); it != _preloadData.end();)
 		{
-			Surface* temp = sortedSurfaces[i];
-			sortedSurfaces[i] = s;
-			s = temp;
+			Image* image = it->first;
+			Surface* surface = it->second;
+
+			Rect rect = Rect(0, 0, surface->GetWidth(), surface->GetHeight());
+			Node* node = rootNode.Insert(rect);
+			if (node)
+			{		
+				rect = node->rect;
+				masterSurface->BlitSurface(surface, rect.x, rect.y);
+				imagesOnSurface.push_back(image);				
+				
+				image->_textureX = (float)rect.x / masterSurface->GetWidth();
+				image->_textureY = (float)rect.y / masterSurface->GetHeight();
+				image->_textureW = (float)rect.width / masterSurface->GetWidth();
+				image->_textureH = (float)rect.height / masterSurface->GetHeight();
+
+				it = _preloadData.erase(it);				
+			}
+			else
+				++it;
 		}
 
+		// OpenGl has reversed Y axis
+		masterSurface->FlipY();
+
+		GLuint texture = masterSurface->CreateGLTexture();
+		
+		for (int i=0; i<imagesOnSurface.size(); ++i)
+		{
+			imagesOnSurface[i]->_texture = texture;
+		}
 	}
-	*/
-	// test code
-	//pMaster->BlitSurface(sortedSurfaces[0], 0, 0);
-
-	
-	ImageByName::const_iterator it = _loadedImages.begin();
-	Image* pTestImg = it->second;
-
-	SurfaceByName::const_iterator it2 = _loadedSurfaces.begin();
-	Surface* pTestSurface = it2->second;
-
-
-	// flip because OpenGL has inverted y axis	
-	pTestSurface->FlipY();
-
-	pTestImg->_textureX = 0.0f;
-	pTestImg->_textureY = 0.0f;
-	pTestImg->_textureW = 1.0f;
-	pTestImg->_textureH = 1.0f;
-	pTestImg->_width = pTestSurface->GetWidth();//sortedSurfaces[0]->GetWidth();
-	pTestImg->_height = pTestSurface->GetHeight();//sortedSurfaces[0]->GetHeight();
-
-	pTestImg->_texture = pTestSurface->CreateGLTexture();//sortedSurfaces[0]->CreateGLTexture();
-
 }
 
 
