@@ -37,7 +37,7 @@ void Graphics::InitOGLES_2D()
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);				 
     glEnable(GL_TEXTURE_2D);							 
     glEnable(GL_BLEND);
-    glBlendFunc(GL_ONE, GL_SRC_COLOR);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glDisable(GL_DEPTH_TEST);	
 
@@ -54,27 +54,23 @@ void Graphics::DrawImage(const Image* a_pImg, float aX, float aY)
 		_boundTexture = aTextureName;	
 	}
 
-	float w = a_pImg->_width;
-	float h = a_pImg->_height;
-	static const float vertices[] =  
+	float hw = a_pImg->_width * 0.5f;
+	float hh = a_pImg->_height * 0.5f;
+	float vertices[] =  
 	{
-		-0.5f * w,	 0.5f * h,  0,
-		 0.5f * w,	 0.5f * h,  0,
-		-0.5f * w,	-0.5f * h,  0,
-		 0.5f * w,	-0.5f * h,  0		 
+		-hw,	 hh,  0,
+		 hw,	 hh,  0,
+		-hw,	-hh,  0,
+		 hw,	-hh,  0		 
 	};
-
-	static const GLfloat texCoords[] =
-	{
-        0.0f, 1.0f,
-        1.0f, 1.0f,
-        0.0f, 0.0f,
-        1.0f, 0.0f
-		/*a_pImg->_textureX, a_pImg->_textureH,
-        a_pImg->_textureW, a_pImg->_textureH,
-        a_pImg->_textureX, a_pImg->_textureY,
-        a_pImg->_textureW, a_pImg->_textureY
-		*/
+	
+	float test =1.0f;
+	GLfloat texCoords[] =
+	{ 
+		a_pImg->_textureX, 1.0f - a_pImg->_textureY,
+		a_pImg->_textureW, 1.0f - a_pImg->_textureY,
+		a_pImg->_textureX, 1.0f - (a_pImg->_textureY + a_pImg->_textureH),
+		a_pImg->_textureW, 1.0f - (a_pImg->_textureY + a_pImg->_textureH),		
     };
 
 	glMatrixMode(GL_MODELVIEW);
@@ -86,11 +82,7 @@ void Graphics::DrawImage(const Image* a_pImg, float aX, float aY)
 	glVertexPointer(3, GL_FLOAT, 0, &vertices);
 	glTexCoordPointer(2, GL_FLOAT, 0, &texCoords);	
 
-	static float x =0;
-	static float y = 0;
-	y -= 0.5f;
-	x += 0.5f;
-	glTranslatef(x, y, 0.0f);
+	glTranslatef(aX, -aY, 0.0f);
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);			
 

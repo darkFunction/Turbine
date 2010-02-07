@@ -17,7 +17,7 @@ public:
 private:
 
 	typedef	Game super;
-	Image				*_pImgTest[17];
+	Image				*_pImgTest[1];
 
 };
 

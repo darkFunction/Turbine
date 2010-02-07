@@ -173,13 +173,14 @@ void ResourceManager::GenerateTextures(const Vector2i &maxSize)
 			{		
 				rect = node->rect;
 				masterSurface->BlitSurface(surface, rect.x, rect.y);
+				surface->Destroy();
 				imagesOnSurface.push_back(image);				
 				
 				image->_textureX = (float)rect.x / masterSurface->GetWidth();
 				image->_textureY = (float)rect.y / masterSurface->GetHeight();
 				image->_textureW = (float)rect.width / masterSurface->GetWidth();
 				image->_textureH = (float)rect.height / masterSurface->GetHeight();
-
+				
 				it = _preloadData.erase(it);				
 			}
 			else
@@ -190,6 +191,7 @@ void ResourceManager::GenerateTextures(const Vector2i &maxSize)
 		masterSurface->FlipY();
 
 		GLuint texture = masterSurface->CreateGLTexture();
+		masterSurface->Destroy();
 		
 		for (int i=0; i<imagesOnSurface.size(); ++i)
 		{
