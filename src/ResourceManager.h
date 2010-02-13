@@ -8,7 +8,6 @@
 #include "Vector2D.h"
 #include <vector>
 
-
 typedef std::pair<Image*, Surface*> ImageSurfacePair;
 
 class ResourceManager

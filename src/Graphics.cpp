@@ -4,7 +4,7 @@
 Graphics::Graphics()
 {
 	_boundTexture = 0;
-	_aspectRatio = (SCREENWIDTH / SCREENHEIGHT);
+	_aspectRatio = ((float)SCREENWIDTH / SCREENHEIGHT);
 
 	InitOGLES_2D();
 }
@@ -42,7 +42,7 @@ void Graphics::InitOGLES_2D()
 	glDisable(GL_DEPTH_TEST);	
 
 	glEnable(GL_CULL_FACE);
-	glFrontFace(GL_CW); 	
+	//glFrontFace(GL_CW); 	
 }
 
 void Graphics::DrawImage(const Image* a_pImg, float aX, float aY)
@@ -55,22 +55,21 @@ void Graphics::DrawImage(const Image* a_pImg, float aX, float aY)
 	}
 
 	float hw = a_pImg->_width * 0.5f;
-	float hh = a_pImg->_height * 0.5f;
+	float hh = a_pImg->_height * 0.5f;	
 	float vertices[] =  
 	{
-		-hw,	 hh,  0,
-		 hw,	 hh,  0,
-		-hw,	-hh,  0,
-		 hw,	-hh,  0		 
+		-hw,	 -hh,  0,
+		 hw,	 -hh,  0,
+		-hw,	  hh,  0,
+		 hw,	  hh,  0		 
 	};
-	
-	float test =1.0f;
+		
 	GLfloat texCoords[] =
 	{ 
-		a_pImg->_textureX, 1.0f - a_pImg->_textureY,
-		a_pImg->_textureW, 1.0f - a_pImg->_textureY,
-		a_pImg->_textureX, 1.0f - (a_pImg->_textureY + a_pImg->_textureH),
-		a_pImg->_textureW, 1.0f - (a_pImg->_textureY + a_pImg->_textureH),		
+		a_pImg->_textureX,						a_pImg->_textureY - a_pImg->_textureH,
+		a_pImg->_textureX + a_pImg->_textureW,  a_pImg->_textureY - a_pImg->_textureH,
+		a_pImg->_textureX,						a_pImg->_textureY,
+		a_pImg->_textureX + a_pImg->_textureW,	a_pImg->_textureY		
     };
 
 	glMatrixMode(GL_MODELVIEW);

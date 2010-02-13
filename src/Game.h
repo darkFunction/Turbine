@@ -29,7 +29,7 @@ protected:
 
 	Graphics			*_pGfx;
 	ResourceManager		*_pResManager;
-	Image				*_pImgTest;
+	
 
 };
 

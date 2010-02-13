@@ -7,6 +7,7 @@
 
 using namespace std;
 
+// Texture atlas packing algorithm
 struct Node
 {
     Node **children;
@@ -154,9 +155,11 @@ void ResourceManager::GenerateTextures(const Vector2i &maxSize)
 
 	vector<Surface*> masterTextures;
 
-	while(!_preloadData.empty())
+	int masterTextureCount = 0;
+	while(!_preloadData.empty() && masterTextureCount < MAX_TEXTURES)
 	{
 		Surface* masterSurface = new Surface(NULL, maxSize.x, maxSize.y, 4);
+		masterTextureCount ++;
 		vector<Image*> imagesOnSurface;
 
 		Node rootNode;
@@ -171,6 +174,7 @@ void ResourceManager::GenerateTextures(const Vector2i &maxSize)
 			Node* node = rootNode.Insert(rect);
 			if (node)
 			{		
+				// we managed to fit it inside the master texture
 				rect = node->rect;
 				masterSurface->BlitSurface(surface, rect.x, rect.y);
 				surface->Destroy();
@@ -193,7 +197,7 @@ void ResourceManager::GenerateTextures(const Vector2i &maxSize)
 		GLuint texture = masterSurface->CreateGLTexture();
 		masterSurface->Destroy();
 		
-		for (int i=0; i<imagesOnSurface.size(); ++i)
+		for (uint16 i=0; i<imagesOnSurface.size(); ++i)
 		{
 			imagesOnSurface[i]->_texture = texture;
 		}
@@ -236,4 +240,5 @@ Surface* ResourceManager::PngToSurface(const char *aFile_name)
 	
 	return new Surface(&image[0], w, h, 4);
 }
+
 

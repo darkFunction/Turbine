@@ -124,7 +124,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, TCHAR *lpCmdLin
 
 	// Create the eglWindow
 	RECT	sRect;
-	SetRect(&sRect, 0, 0, SCREENWIDTH, SCREENHEIGHT);
+	SetRect(&sRect, 0, 0, (int)SCREENWIDTH, (int)SCREENHEIGHT);
 	AdjustWindowRectEx(&sRect, WS_CAPTION | WS_SYSMENU, false, 0);
 	hWnd = CreateWindow( WINDOW_CLASS, _T("Iphone Sim"), WS_VISIBLE | WS_SYSMENU,
 						 0, 0, SCREENWIDTH, SCREENHEIGHT, NULL, NULL, hInstance, NULL);

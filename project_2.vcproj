@@ -189,6 +189,22 @@
 				RelativePath=".\src\WinMain.cpp"
 				>
 			</File>
+			<Filter
+				Name="tilegame"
+				>
+				<File
+					RelativePath=".\src\tilegame\Board.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\tilegame\Resources.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\tilegame\Tile.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -235,6 +251,26 @@
 				RelativePath=".\src\Vector2D.h"
 				>
 			</File>
+			<Filter
+				Name="tilegame"
+				>
+				<File
+					RelativePath=".\src\tilegame\Board.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\tilegame\GameResources.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\tilegame\Resources.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\tilegame\Tile.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"

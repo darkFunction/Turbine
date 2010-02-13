@@ -8,12 +8,12 @@
 #include <GLES/egl.h>
 #include <GLES/gl.h>
 
-
+#define MAX_TEXTURES 4
 #define MAX_TEXTURE_WIDTH	1024
 #define MAX_TEXTURE_HEIGHT	1024
 
-#define SCREENWIDTH			320.0f
-#define SCREENHEIGHT		480.0f
+#define SCREENWIDTH			480
+#define SCREENHEIGHT		320
 
 
 #endif

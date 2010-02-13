@@ -2,6 +2,8 @@
 #define TESTGAME_H
 
 #include "Game.h"
+#include "tilegame/Board.h"
+#include "tilegame/Resources.h"
 
 class TestGame : public Game
 {
@@ -16,8 +18,9 @@ public:
 
 private:
 
-	typedef	Game super;
-	Image				*_pImgTest[1];
+	typedef	Game super;		
+	
+	Board*	pBoard;
 
 };
 
