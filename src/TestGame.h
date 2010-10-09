@@ -15,13 +15,12 @@ public:
 	void Update();
 	void Draw();
 	void LoadResources();	
+	void UnloadResources();
 
 private:
 
 	typedef	Game super;		
 	
-	Board*	pBoard;
-
 };
 
 #endif

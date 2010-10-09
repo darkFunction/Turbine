@@ -2,6 +2,7 @@
 #define TILE_H
 
 #include "../Graphics.h"
+#include "../Vector2D.h"
 
 enum TriangleType
 {
@@ -44,11 +45,14 @@ public:
 	Tile(TrianglePos aTriPos);
 	~Tile();
 
-	void Draw(Graphics* aGfx);
+	static Vector2i Size();
+
+	void Draw(Graphics* aGfx, Vector2i &pos);
+	
 
 private:	
 	
-	TrianglePos _positions;
+	TrianglePos triPositions;
 };
 
 #endif

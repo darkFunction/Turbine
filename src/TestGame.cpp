@@ -4,26 +4,23 @@
 
 TestGame::TestGame() : super()
 {
-	pBoard = new Board(3, 3);
+	
 }
 
 TestGame::~TestGame() 
 {
-
+	UnloadResources();
 }
 
 void TestGame::LoadResources()
 {	
-	pImgTriangle[TRI_RED] = _pResManager->LoadImage("resources/graphics/tiles/red.png");	
-	pImgTriangle[TRI_BLUE] = _pResManager->LoadImage("resources/graphics/tiles/blue.png");
-	pImgTriangle[TRI_GREEN] = _pResManager->LoadImage("resources/graphics/tiles/green.png");	
-	pImgTriangle[TRI_YELLOW] = _pResManager->LoadImage("resources/graphics/tiles/yellow.png");	
-	pImgTriangle[TRI_DARKBLUE] = _pResManager->LoadImage("resources/graphics/tiles/dark_blue.png");	
-	pImgTriangle[TRI_DARKGREEN] = _pResManager->LoadImage("resources/graphics/tiles/dark_green.png");	
-	pImgTriangle[TRI_PURPLE] = _pResManager->LoadImage("resources/graphics/tiles/purple.png");	
-	pImgTriangle[TRI_ORANGE] = _pResManager->LoadImage("resources/graphics/tiles/orange.png");	
 	
-	_pResManager->GenerateTextures(Vector2i(MAX_TEXTURE_WIDTH, MAX_TEXTURE_HEIGHT));
+	//_pResManager->GenerateTextures(Vector2i(MAX_TEXTURE_WIDTH, MAX_TEXTURE_HEIGHT));
+}
+
+void TestGame::UnloadResources()
+{
+	
 }
 
 void TestGame::Update()
@@ -36,8 +33,31 @@ void TestGame::Update()
 
 void TestGame::Draw()
 {	
+	glClearColor(0.0f, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 
-	pBoard->Draw(_pGfx);
+   
+	const GLfloat points[] = 
+	{
+       -50.0, -50.0, 0.0,        0.5, 0.5, 1.0, 0.5, // First point
+	};
+
+	glLoadIdentity();
+	glTranslatef(150.0, -220.0, 0.0);
+
+	static float rot = 0.0f;
+	glRotatef(rot += 0.5f, 0.0, 0.0, 1.0);
+
+	glEnable(GL_POINT_SMOOTH);
+	glPointSize(50.0);
+	glVertexPointer(3, GL_FLOAT, 28, points);
+	glColorPointer(4, GL_FLOAT, 28, &points[3]);
+	glEnableClientState(GL_COLOR_ARRAY);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glDrawArrays(GL_POINTS, 0, 1);
+
+
+
+
 }

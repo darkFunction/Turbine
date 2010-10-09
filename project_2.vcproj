@@ -204,6 +204,10 @@
 					RelativePath=".\src\tilegame\Tile.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\src\tilegame\TileGame.cpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -268,6 +272,10 @@
 				</File>
 				<File
 					RelativePath=".\src\tilegame\Tile.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\tilegame\TileGame.h"
 					>
 				</File>
 			</Filter>

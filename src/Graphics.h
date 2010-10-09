@@ -11,7 +11,7 @@ public:
 	Graphics();
 	~Graphics();
 
-	void DrawImage(const Image* a_pImg, float aX, float aY);
+	void DrawImage(const Image* a_pImg, float aX, float aY, float aAngle);
 
 private :
 	GLuint _boundTexture;

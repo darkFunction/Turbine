@@ -45,7 +45,7 @@ void Graphics::InitOGLES_2D()
 	//glFrontFace(GL_CW); 	
 }
 
-void Graphics::DrawImage(const Image* a_pImg, float aX, float aY)
+void Graphics::DrawImage(const Image* a_pImg, float aX, float aY, float aAngle)
 {
 	GLuint aTextureName = a_pImg->_texture;
 	if (_boundTexture != aTextureName)
@@ -82,6 +82,7 @@ void Graphics::DrawImage(const Image* a_pImg, float aX, float aY)
 	glTexCoordPointer(2, GL_FLOAT, 0, &texCoords);	
 
 	glTranslatef(aX, -aY, 0.0f);
+	glRotatef(aAngle, 0.0f, 0.0f, 1.0f);
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);			
 
