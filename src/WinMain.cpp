@@ -3,7 +3,7 @@ App Entry point for WIN32 & Init OpenGL  ES
 ******************************************************************************/
 #include "Platform.h"
 #include "Types.h"
-#include "TestGame.h"
+#include "tilegame/TileGame.h"
 
 
 /******************************************************************************
